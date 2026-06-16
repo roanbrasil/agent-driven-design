@@ -1,5 +1,7 @@
 # 04 — Agent Topology Patterns
 
+![Agent Topology Patterns](../../img/3-topologies.png)
+
 ## What is topology?
 
 Agent topology is the arrangement of agents in a system: how they connect, who coordinates whom, and how information flows between them. Topology is a Harness-level concern — the routing, sequencing, and coordination of agents is always code, not model reasoning.
@@ -57,7 +59,7 @@ One orchestrator agent coordinates multiple worker agents. The orchestrator reas
 
 ---
 
-### 3. Peer Network
+### 3. Event-Driven (Mesh)
 
 ```
 [Agent A] ←→ [Agent B]
@@ -65,7 +67,7 @@ One orchestrator agent coordinates multiple worker agents. The orchestrator reas
 [Agent C] ←→ [Agent D]
 ```
 
-Agents communicate as peers, passing work based on capability rather than hierarchy. Often event-driven. No single coordinator.
+Agents communicate through events, passing work based on capability rather than hierarchy. No single coordinator — routing is dynamic and event-driven.
 
 **When to use:**
 - Tasks are dynamic and routing cannot be predetermined
@@ -80,7 +82,7 @@ Agents communicate as peers, passing work based on capability rather than hierar
 **When NOT to use:**
 - When routing criteria are structural (use deterministic code)
 - When you want predictable failure behavior
-- When latency is a concern (peer coordination adds round-trip overhead)
+- When latency is a concern (event-driven coordination adds round-trip overhead)
 
 ---
 

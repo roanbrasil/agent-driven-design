@@ -2,6 +2,8 @@
 
 A map of how all ADD concepts and patterns relate to each other.
 
+![Harnessing Connects](../img/5-map.png)
+
 ## The layers
 
 ```

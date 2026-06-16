@@ -97,18 +97,22 @@ A single boundary can be served by multiple agents (for parallelism or specializ
 
 ## Example: Mapping a Boundary
 
-For an agent operating in a travel search context:
+For a Card Agent operating in a credit card system:
 
 | Element | Value |
 |---|---|
-| **Vocabulary** | Origin, Destination, Itinerary, Fare, Availability |
-| **Tools** | search_flights, get_fare_rules, check_availability |
-| **Owned state** | search_session memory (scoped to session ID) |
-| **Inputs accepted** | SearchIntent (structured) |
-| **Outputs produced** | SearchResult (structured) |
-| **Out of scope** | Booking, payment, customer profile, support history |
+| **Vocabulary** | Card Number, Credit Limit, Statement, Due Date, Cardholder, CVV |
+| **Tools** | `get_card_details()`, `get_statement()`, `get_credit_limit()`, `request_limit_increase()` |
+| **Owned state** | `card_session[card_id]` |
+| **Inputs accepted** | `CardQuery` (structured) |
+| **Outputs produced** | `CardSummary` (structured) |
+| **Out of scope** | Payment authorization, fraud scoring, transaction history |
 
-Booking is a separate boundary. If the search agent needs to initiate a booking, it produces a structured output that the Harness routes to the booking agent — it does not reach into booking tools directly.
+Payment is a separate boundary served by a Payment Agent (`authorize_payment()`, `process_refund()`). Fraud detection is a separate boundary served by a Fraud Agent (`score_transaction()`, `block_card()`). If the Card Agent needs to trigger a payment, it produces a structured `CardQuery` output that the Harness routes to the Payment Agent — it does not reach into payment tools directly.
+
+Note: "Card" means something different in the Card Agent (account entity, credit limit, statement) than in the Fraud Agent (risk surface, velocity indicator). Same word, different invariants, different tools, different owner. This is why the boundary exists.
+
+![Agent Context Boundaries — Credit Card System](../../img/2-boundaries.png)
 
 ---
 

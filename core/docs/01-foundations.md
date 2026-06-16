@@ -1,5 +1,7 @@
 # 01 — Foundations: Model, Harness, and the Decision Rule
 
+![ADD Core Structure](../../img/1-core.png)
+
 ## The Fundamental Split
 
 Every LLM-based agent has two distinct parts. Conflating them is the most common source of architectural problems in agentic systems.

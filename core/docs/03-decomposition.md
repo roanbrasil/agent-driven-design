@@ -1,5 +1,7 @@
 # 03 — Decomposition: When and How to Split into Multiple Agents
 
+![When to Decompose into Multiple Agents](../../img/6-decomposition.png)
+
 ## The Default Position
 
 A single well-designed agent is almost always preferable to multiple poorly-bounded ones. Decomposition adds coordination overhead, failure surfaces, and operational complexity. The burden of proof is on decomposition.
@@ -167,7 +169,7 @@ Know which category each agent in your topology falls into. Universal agents get
 Splitting a single agent that works into multiple agents before any concrete problem with the single-agent design has been identified. Creates coordination complexity for no benefit.
 
 ### Coordination through the Model
-Using an LLM as the router in a topology where routing criteria are structural (e.g., "if the request contains a booking ID, route to booking agent"). Routing on structural criteria belongs in the Harness.
+Using an LLM as the router in a topology where routing criteria are structural (e.g., "if the request contains a transaction ID, route to the payment agent"). Routing on structural criteria belongs in the Harness.
 
 ### Agents as microservices
 Treating every function or capability as a separate agent. The grain is too fine. An agent should have a coherent objective, not a single function.

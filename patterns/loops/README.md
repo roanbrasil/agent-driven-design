@@ -1,5 +1,7 @@
 # Agentic Loop Patterns
 
+![Agentic Loop Patterns](../../img/4-loop.png)
+
 An agentic loop is the mechanism by which a Harness drives repeated Model calls until a stopping condition is met. The loop itself is always Harness — the Model only sees individual turns within the loop.
 
 ## The three fundamental loops

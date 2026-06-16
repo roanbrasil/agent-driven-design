@@ -35,6 +35,8 @@ The decision rule: *Does this require reasoning or judgment?* → Model. *Is thi
 
 ## Where Everything Fits
 
+![ADD Conceptual Layer](img/add-conceptual-layer.png)
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                   ADD (conceptual layer)                     │
