@@ -28,8 +28,12 @@ ADD is not a framework library. It is a design language.
 | **Agent** | Always `Model + Harness`. Neither alone is an agent. |
 | **Agent Context Boundary** | The conceptual scope of what an agent knows, can do, and owns. |
 | **Agent Topology** | How agents are arranged and connected in a system. |
+| **Harness-Driven Design (HDD)** | Improve the agent by changing the Harness. Default strategy. |
+| **LLM-Driven Design (LDD)** | Improve the agent by changing the Model. Applied after HDD is exhausted. |
 
 The decision rule: *Does this require reasoning or judgment?* → Model. *Is this structure, flow, or contract?* → Harness. *Does this serve the Harness?* → Infra.
+
+The improvement rule: *Is this a context, tool, or routing problem?* → HDD. *Is the Model reasoning incorrectly despite correct context?* → LDD.
 
 ---
 
