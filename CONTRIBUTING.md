@@ -6,7 +6,7 @@ ADD is a research framework in early development. All contributions are welcome 
 
 - **Counterexamples** — cases where the Model/Harness split breaks down or the decision rule gives the wrong answer. These sharpen the framework.
 - **Examples** — concrete agentic systems (anonymized or synthetic) annotated with ADD concepts. See `examples/` for format.
-- **Open questions** — additions to `research/open-questions.md` that identify gaps in the framework.
+- **Open questions** — additions to `OPEN-QUESTIONS.md` that identify gaps in the framework.
 - **Concept refinements** — edits to `docs/` or `GLOSSARY.md` where a definition is imprecise, incomplete, or wrong.
 - **Pattern documentation** — new topology patterns, decomposition patterns, or anti-patterns that are not yet covered.
 

@@ -40,9 +40,33 @@ The formal interface of an agent: the input schema it accepts and the output sch
 
 ## Agent Topology
 
-The arrangement of agents in a system: how they connect, who orchestrates whom, and how information flows. Common topologies include pipeline, hierarchical, peer network, and specialist pool.
+The arrangement of agents in a system: how they connect, who orchestrates whom, and how information flows. Common topologies: Pipeline, Hierarchical, Event-Driven (Mesh), and Specialist Pool.
 
 *DDD analog: Context Map*
+
+---
+
+## Pipeline Topology
+
+Agents arranged in sequence. Each agent processes and passes its output to the next. Simple, predictable, and appropriate when tasks are naturally sequential and each step depends on the prior. The simplest topology — prefer it when it fits.
+
+---
+
+## Hierarchical Topology
+
+One Orchestrator agent coordinates multiple Worker agents. The Orchestrator reasons about task decomposition and result assembly; Workers execute focused sub-tasks within their own context boundaries. The Orchestrator is a Universal Agent; Workers are Conditional Agents.
+
+---
+
+## Event-Driven (Mesh) Topology
+
+Agents communicate through events, passing work based on capability rather than hierarchy. No single coordinator — routing is dynamic. Adds significant coordination and observability complexity; use sparingly and only when routing cannot be predetermined.
+
+---
+
+## Specialist Pool Topology
+
+Multiple specialist agents each scoped to a distinct domain, fronted by a Router. The Router directs incoming work to the appropriate specialist. The Router should be deterministic code when routing criteria are structural; an LLM router is only justified when routing requires content-level judgment.
 
 ---
 

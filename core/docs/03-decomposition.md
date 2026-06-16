@@ -123,9 +123,9 @@ Use when: a complex task can be decomposed into independent sub-tasks, and the d
 
 ---
 
-### Peer Network
+### Event-Driven (Mesh)
 
-Agents communicate as peers, passing work based on capability rather than hierarchy. Often event-driven.
+Agents communicate through events, passing work based on capability rather than hierarchy. No single coordinator — routing is dynamic and event-driven.
 
 ```
 [Agent A] ←→ [Agent B]
