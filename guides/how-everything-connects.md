@@ -52,7 +52,10 @@ A map of how all ADD concepts and patterns relate to each other.
 → See [Observability](../production/observability/README.md) and [examples](../examples/observability/)
 
 ### If you're asking "how do I know if my agent is working correctly?"
-→ See [Evals](../production/evals/README.md)
+→ See [Evals](../production/evals/README.md) — golden sets, trajectory evals, regression testing
+
+### If you're asking "how do I use a model to evaluate another model's output?"
+→ See [LLM-as-Judge](../production/evals/llm-as-judge.md) — rubrics, bias, panels, trajectory judging
 
 ### If you're asking "should I fine-tune?"
 → See [Fine-tuning](../production/fine-tuning/README.md) — only after ruling out Harness fixes
