@@ -1,0 +1,682 @@
+[
+  {
+    "case_id": "TC-001",
+    "description": "Normal domestic purchase well within typical spend",
+    "difficulty": "easy",
+    "transaction": {
+      "transaction_id": "TX-001",
+      "card_id": "CARD-A1",
+      "amount": 45.00,
+      "merchant_id": "MERCH-GROCERY-01",
+      "merchant_category": "grocery",
+      "country": "US",
+      "timestamp": "2024-01-15T14:30:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-A1",
+      "cardholder_name": "Alice Chen",
+      "typical_spend_amount": 120.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 1200
+    },
+    "velocity": {
+      "card_id": "CARD-A1",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 3
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-GROCERY-01",
+      "chargeback_rate": 0.001,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["amount_within_typical", "low_velocity", "low_risk_merchant", "domestic"]
+  },
+  {
+    "case_id": "TC-002",
+    "description": "High velocity in 60 minutes — clear fraud pattern",
+    "difficulty": "easy",
+    "transaction": {
+      "transaction_id": "TX-002",
+      "card_id": "CARD-B2",
+      "amount": 299.00,
+      "merchant_id": "MERCH-ELECTRONICS-07",
+      "merchant_category": "electronics",
+      "country": "US",
+      "timestamp": "2024-01-15T15:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-B2",
+      "cardholder_name": "Bob Martinez",
+      "typical_spend_amount": 80.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 450
+    },
+    "velocity": {
+      "card_id": "CARD-B2",
+      "transactions_last_60_min": 9,
+      "transactions_last_24_hours": 14
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-ELECTRONICS-07",
+      "chargeback_rate": 0.025,
+      "risk_tier": "MEDIUM"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["high_velocity_60min", "amount_above_typical", "medium_risk_merchant"]
+  },
+  {
+    "case_id": "TC-003",
+    "description": "High-risk merchant with elevated chargeback rate",
+    "difficulty": "normal",
+    "transaction": {
+      "transaction_id": "TX-003",
+      "card_id": "CARD-C3",
+      "amount": 150.00,
+      "merchant_id": "MERCH-GAMBLING-03",
+      "merchant_category": "gambling",
+      "country": "US",
+      "timestamp": "2024-01-15T20:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-C3",
+      "cardholder_name": "Carol Johnson",
+      "typical_spend_amount": 200.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 900
+    },
+    "velocity": {
+      "card_id": "CARD-C3",
+      "transactions_last_60_min": 2,
+      "transactions_last_24_hours": 5
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-GAMBLING-03",
+      "chargeback_rate": 0.085,
+      "risk_tier": "HIGH"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["high_risk_merchant", "high_chargeback_rate"]
+  },
+  {
+    "case_id": "TC-004",
+    "description": "International transaction — cardholder is actually traveling",
+    "difficulty": "hard",
+    "transaction": {
+      "transaction_id": "TX-004",
+      "card_id": "CARD-D4",
+      "amount": 180.00,
+      "merchant_id": "MERCH-HOTEL-PARIS-01",
+      "merchant_category": "hotel",
+      "country": "FR",
+      "timestamp": "2024-01-16T10:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-D4",
+      "cardholder_name": "David Kim",
+      "typical_spend_amount": 250.00,
+      "home_country": "US",
+      "active_travel_countries": ["FR", "DE"],
+      "account_age_days": 1800
+    },
+    "velocity": {
+      "card_id": "CARD-D4",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 4
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-HOTEL-PARIS-01",
+      "chargeback_rate": 0.008,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["known_travel_country", "amount_within_typical", "low_risk_merchant", "low_velocity"]
+  },
+  {
+    "case_id": "TC-005",
+    "description": "International transaction — no travel record, likely stolen card",
+    "difficulty": "normal",
+    "transaction": {
+      "transaction_id": "TX-005",
+      "card_id": "CARD-E5",
+      "amount": 890.00,
+      "merchant_id": "MERCH-LUXURY-TOKYO-01",
+      "merchant_category": "luxury_goods",
+      "country": "JP",
+      "timestamp": "2024-01-16T02:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-E5",
+      "cardholder_name": "Emma Davis",
+      "typical_spend_amount": 130.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 600
+    },
+    "velocity": {
+      "card_id": "CARD-E5",
+      "transactions_last_60_min": 3,
+      "transactions_last_24_hours": 7
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-LUXURY-TOKYO-01",
+      "chargeback_rate": 0.042,
+      "risk_tier": "MEDIUM"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["no_travel_record", "amount_above_typical", "foreign_country", "medium_risk_merchant"]
+  },
+  {
+    "case_id": "TC-006",
+    "description": "Amount 7x typical spend at high-risk merchant",
+    "difficulty": "easy",
+    "transaction": {
+      "transaction_id": "TX-006",
+      "card_id": "CARD-F6",
+      "amount": 980.00,
+      "merchant_id": "MERCH-CRYPTO-02",
+      "merchant_category": "cryptocurrency",
+      "country": "US",
+      "timestamp": "2024-01-15T23:45:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-F6",
+      "cardholder_name": "Frank Wilson",
+      "typical_spend_amount": 140.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 200
+    },
+    "velocity": {
+      "card_id": "CARD-F6",
+      "transactions_last_60_min": 2,
+      "transactions_last_24_hours": 6
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-CRYPTO-02",
+      "chargeback_rate": 0.071,
+      "risk_tier": "HIGH"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["amount_above_typical", "high_risk_merchant", "new_account"]
+  },
+  {
+    "case_id": "TC-007",
+    "description": "Borderline velocity — exactly at threshold, low risk everything else",
+    "difficulty": "edge",
+    "transaction": {
+      "transaction_id": "TX-007",
+      "card_id": "CARD-G7",
+      "amount": 65.00,
+      "merchant_id": "MERCH-RESTAURANT-04",
+      "merchant_category": "restaurant",
+      "country": "US",
+      "timestamp": "2024-01-15T19:30:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-G7",
+      "cardholder_name": "Grace Lee",
+      "typical_spend_amount": 90.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 2100
+    },
+    "velocity": {
+      "card_id": "CARD-G7",
+      "transactions_last_60_min": 5,
+      "transactions_last_24_hours": 12
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-RESTAURANT-04",
+      "chargeback_rate": 0.005,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["velocity_at_threshold", "amount_within_typical", "low_risk_merchant", "long_account_history"]
+  },
+  {
+    "case_id": "TC-008",
+    "description": "Multiple risk signals converging — velocity + amount + foreign country",
+    "difficulty": "normal",
+    "transaction": {
+      "transaction_id": "TX-008",
+      "card_id": "CARD-H8",
+      "amount": 1200.00,
+      "merchant_id": "MERCH-ELECTRONICS-BRAZIL-02",
+      "merchant_category": "electronics",
+      "country": "BR",
+      "timestamp": "2024-01-16T03:15:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-H8",
+      "cardholder_name": "Henry Thompson",
+      "typical_spend_amount": 175.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 730
+    },
+    "velocity": {
+      "card_id": "CARD-H8",
+      "transactions_last_60_min": 7,
+      "transactions_last_24_hours": 11
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-ELECTRONICS-BRAZIL-02",
+      "chargeback_rate": 0.055,
+      "risk_tier": "HIGH"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["high_velocity_60min", "amount_above_typical", "foreign_country", "no_travel_record", "high_risk_merchant"]
+  },
+  {
+    "case_id": "TC-009",
+    "description": "Regular commuter pattern — recurring transit purchases",
+    "difficulty": "easy",
+    "transaction": {
+      "transaction_id": "TX-009",
+      "card_id": "CARD-I9",
+      "amount": 3.50,
+      "merchant_id": "MERCH-TRANSIT-NYC-01",
+      "merchant_category": "transit",
+      "country": "US",
+      "timestamp": "2024-01-15T08:10:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-I9",
+      "cardholder_name": "Iris Nakamura",
+      "typical_spend_amount": 50.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 1500
+    },
+    "velocity": {
+      "card_id": "CARD-I9",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 2
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-TRANSIT-NYC-01",
+      "chargeback_rate": 0.002,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["amount_within_typical", "low_velocity", "low_risk_merchant", "domestic"]
+  },
+  {
+    "case_id": "TC-010",
+    "description": "Card testing pattern — many tiny transactions in rapid succession",
+    "difficulty": "normal",
+    "transaction": {
+      "transaction_id": "TX-010",
+      "card_id": "CARD-J10",
+      "amount": 1.00,
+      "merchant_id": "MERCH-ONLINE-MISC-09",
+      "merchant_category": "online_retail",
+      "country": "US",
+      "timestamp": "2024-01-15T16:45:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-J10",
+      "cardholder_name": "James Okafor",
+      "typical_spend_amount": 200.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 300
+    },
+    "velocity": {
+      "card_id": "CARD-J10",
+      "transactions_last_60_min": 12,
+      "transactions_last_24_hours": 18
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-ONLINE-MISC-09",
+      "chargeback_rate": 0.038,
+      "risk_tier": "MEDIUM"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["high_velocity_60min", "card_testing_pattern", "medium_risk_merchant"]
+  },
+  {
+    "case_id": "TC-011",
+    "description": "Known frequent traveler buying in a new but plausible country",
+    "difficulty": "hard",
+    "transaction": {
+      "transaction_id": "TX-011",
+      "card_id": "CARD-K11",
+      "amount": 320.00,
+      "merchant_id": "MERCH-RESTAURANT-LONDON-03",
+      "merchant_category": "restaurant",
+      "country": "GB",
+      "timestamp": "2024-01-17T19:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-K11",
+      "cardholder_name": "Karen Patel",
+      "typical_spend_amount": 400.00,
+      "home_country": "US",
+      "active_travel_countries": ["GB", "FR", "DE", "JP"],
+      "account_age_days": 3000
+    },
+    "velocity": {
+      "card_id": "CARD-K11",
+      "transactions_last_60_min": 2,
+      "transactions_last_24_hours": 5
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-RESTAURANT-LONDON-03",
+      "chargeback_rate": 0.009,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["known_travel_country", "amount_within_typical", "low_velocity", "long_account_history"]
+  },
+  {
+    "case_id": "TC-012",
+    "description": "Newly issued card making large purchase immediately",
+    "difficulty": "normal",
+    "transaction": {
+      "transaction_id": "TX-012",
+      "card_id": "CARD-L12",
+      "amount": 2400.00,
+      "merchant_id": "MERCH-JEWELRY-05",
+      "merchant_category": "jewelry",
+      "country": "US",
+      "timestamp": "2024-01-15T11:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-L12",
+      "cardholder_name": "Liam Foster",
+      "typical_spend_amount": 300.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 3
+    },
+    "velocity": {
+      "card_id": "CARD-L12",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 1
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-JEWELRY-05",
+      "chargeback_rate": 0.045,
+      "risk_tier": "MEDIUM"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["new_account", "amount_above_typical", "medium_risk_merchant"]
+  },
+  {
+    "case_id": "TC-013",
+    "description": "Subscription renewal — predictable recurring charge",
+    "difficulty": "easy",
+    "transaction": {
+      "transaction_id": "TX-013",
+      "card_id": "CARD-M13",
+      "amount": 14.99,
+      "merchant_id": "MERCH-STREAMING-01",
+      "merchant_category": "streaming",
+      "country": "US",
+      "timestamp": "2024-01-15T00:01:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-M13",
+      "cardholder_name": "Maya Rodriguez",
+      "typical_spend_amount": 100.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 900
+    },
+    "velocity": {
+      "card_id": "CARD-M13",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 3
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-STREAMING-01",
+      "chargeback_rate": 0.003,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["amount_within_typical", "low_velocity", "low_risk_merchant"]
+  },
+  {
+    "case_id": "TC-014",
+    "description": "Velocity spike after card reported lost — card not yet blocked",
+    "difficulty": "hard",
+    "transaction": {
+      "transaction_id": "TX-014",
+      "card_id": "CARD-N14",
+      "amount": 450.00,
+      "merchant_id": "MERCH-PHARMACY-03",
+      "merchant_category": "pharmacy",
+      "country": "US",
+      "timestamp": "2024-01-15T14:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-N14",
+      "cardholder_name": "Noah Clark",
+      "typical_spend_amount": 60.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 550
+    },
+    "velocity": {
+      "card_id": "CARD-N14",
+      "transactions_last_60_min": 8,
+      "transactions_last_24_hours": 15
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-PHARMACY-03",
+      "chargeback_rate": 0.012,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["high_velocity_60min", "amount_above_typical"]
+  },
+  {
+    "case_id": "TC-015",
+    "description": "Corporate card — large amount is within policy for this cardholder",
+    "difficulty": "hard",
+    "transaction": {
+      "transaction_id": "TX-015",
+      "card_id": "CARD-O15",
+      "amount": 4800.00,
+      "merchant_id": "MERCH-HOTEL-NYC-02",
+      "merchant_category": "hotel",
+      "country": "US",
+      "timestamp": "2024-01-15T15:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-O15",
+      "cardholder_name": "Olivia Zhang",
+      "typical_spend_amount": 5000.00,
+      "home_country": "US",
+      "active_travel_countries": ["GB", "DE", "JP", "SG"],
+      "account_age_days": 2500
+    },
+    "velocity": {
+      "card_id": "CARD-O15",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 3
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-HOTEL-NYC-02",
+      "chargeback_rate": 0.007,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["amount_within_typical", "low_velocity", "low_risk_merchant", "long_account_history"]
+  },
+  {
+    "case_id": "TC-016",
+    "description": "Unusual category — cardholder never buys in this category",
+    "difficulty": "normal",
+    "transaction": {
+      "transaction_id": "TX-016",
+      "card_id": "CARD-P16",
+      "amount": 600.00,
+      "merchant_id": "MERCH-FIREARMS-01",
+      "merchant_category": "firearms",
+      "country": "US",
+      "timestamp": "2024-01-15T10:30:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-P16",
+      "cardholder_name": "Pedro Santos",
+      "typical_spend_amount": 200.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 1100
+    },
+    "velocity": {
+      "card_id": "CARD-P16",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 4
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-FIREARMS-01",
+      "chargeback_rate": 0.018,
+      "risk_tier": "MEDIUM"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["amount_above_typical", "high_risk_category", "medium_risk_merchant"]
+  },
+  {
+    "case_id": "TC-017",
+    "description": "Two transactions from different countries 30 minutes apart — impossible travel",
+    "difficulty": "edge",
+    "transaction": {
+      "transaction_id": "TX-017",
+      "card_id": "CARD-Q17",
+      "amount": 250.00,
+      "merchant_id": "MERCH-RETAIL-BERLIN-01",
+      "merchant_category": "retail",
+      "country": "DE",
+      "timestamp": "2024-01-15T12:30:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-Q17",
+      "cardholder_name": "Quinn O'Brien",
+      "typical_spend_amount": 300.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 800
+    },
+    "velocity": {
+      "card_id": "CARD-Q17",
+      "transactions_last_60_min": 2,
+      "transactions_last_24_hours": 5
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-RETAIL-BERLIN-01",
+      "chargeback_rate": 0.011,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["no_travel_record", "foreign_country", "impossible_travel_pattern"]
+  },
+  {
+    "case_id": "TC-018",
+    "description": "Small amount at high-risk merchant — card testing before big purchase",
+    "difficulty": "normal",
+    "transaction": {
+      "transaction_id": "TX-018",
+      "card_id": "CARD-R18",
+      "amount": 2.50,
+      "merchant_id": "MERCH-GAMBLING-07",
+      "merchant_category": "gambling",
+      "country": "US",
+      "timestamp": "2024-01-15T21:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-R18",
+      "cardholder_name": "Rachel Green",
+      "typical_spend_amount": 180.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 180
+    },
+    "velocity": {
+      "card_id": "CARD-R18",
+      "transactions_last_60_min": 6,
+      "transactions_last_24_hours": 10
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-GAMBLING-07",
+      "chargeback_rate": 0.062,
+      "risk_tier": "HIGH"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["high_velocity_60min", "high_risk_merchant", "card_testing_pattern"]
+  },
+  {
+    "case_id": "TC-019",
+    "description": "Grocery purchase during travel — normal cardholder behavior",
+    "difficulty": "easy",
+    "transaction": {
+      "transaction_id": "TX-019",
+      "card_id": "CARD-S19",
+      "amount": 67.00,
+      "merchant_id": "MERCH-GROCERY-TORONTO-01",
+      "merchant_category": "grocery",
+      "country": "CA",
+      "timestamp": "2024-01-18T17:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-S19",
+      "cardholder_name": "Sofia Andersen",
+      "typical_spend_amount": 100.00,
+      "home_country": "US",
+      "active_travel_countries": ["CA"],
+      "account_age_days": 1300
+    },
+    "velocity": {
+      "card_id": "CARD-S19",
+      "transactions_last_60_min": 1,
+      "transactions_last_24_hours": 4
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-GROCERY-TORONTO-01",
+      "chargeback_rate": 0.002,
+      "risk_tier": "LOW"
+    },
+    "expected_decision": "APPROVE",
+    "expected_signals": ["known_travel_country", "amount_within_typical", "low_risk_merchant"]
+  },
+  {
+    "case_id": "TC-020",
+    "description": "Borderline case — elevated but not extreme signals across all dimensions",
+    "difficulty": "edge",
+    "transaction": {
+      "transaction_id": "TX-020",
+      "card_id": "CARD-T20",
+      "amount": 380.00,
+      "merchant_id": "MERCH-ELECTRONICS-MIAMI-04",
+      "merchant_category": "electronics",
+      "country": "US",
+      "timestamp": "2024-01-15T22:00:00Z"
+    },
+    "card_profile": {
+      "card_id": "CARD-T20",
+      "cardholder_name": "Thomas Wright",
+      "typical_spend_amount": 250.00,
+      "home_country": "US",
+      "active_travel_countries": [],
+      "account_age_days": 400
+    },
+    "velocity": {
+      "card_id": "CARD-T20",
+      "transactions_last_60_min": 4,
+      "transactions_last_24_hours": 9
+    },
+    "merchant_risk": {
+      "merchant_id": "MERCH-ELECTRONICS-MIAMI-04",
+      "chargeback_rate": 0.028,
+      "risk_tier": "MEDIUM"
+    },
+    "expected_decision": "BLOCK",
+    "expected_signals": ["amount_above_typical", "velocity_elevated", "medium_risk_merchant", "late_night_purchase"]
+  }
+]

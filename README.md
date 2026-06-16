@@ -67,6 +67,28 @@ agent-driven-design/
 
 ---
 
+## Reference System
+
+The [`reference/`](reference/) directory is a complete, runnable system that demonstrates every ADD concept working together. It is the ADD equivalent of a DDD reference application: a real fraud detection agent, not a toy.
+
+It shows:
+- **Three versions of the same agent** (v1 → v2 → v3), each representing an HDD iteration with working evals before and after
+- **Output evals, trajectory evals, and LLM-as-Judge** — all running against a 20-case golden dataset
+- **Observability** — every agent run captures a full trace; every eval score attaches to a trace ID
+- **The LLMDD decision point** — documented with evidence of when Harness exhaustion actually looks like
+
+```bash
+# Run evals on the latest agent version
+python reference/scripts/run_evals.py --version v3
+
+# Compare all three versions side by side (shows HDD progression)
+python reference/scripts/compare_versions.py
+```
+
+See [reference/README.md](reference/README.md) for the full walkthrough.
+
+---
+
 ## Runnable Examples
 
 All examples are in Python. Each one is annotated to show where Model and Harness responsibilities begin and end.
