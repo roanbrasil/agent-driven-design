@@ -1,6 +1,6 @@
 # Harness-Driven Design vs. LLM-Driven Design
 
-![ADD — HDD vs LDD](../img/add-hdd-llmdd.png)
+![ADD — HDD vs LLMDD](../img/add-hdd-llmdd.png)
 
 Every improvement to an agent is either a Harness change or a Model change. Knowing which one to make — and in what order — is the core design skill in ADD.
 
@@ -34,7 +34,7 @@ Model (unchanged) → better Harness → better Agent
 
 ---
 
-### LLM-Driven Design (LDD)
+### LLM-Driven Design (LLMDD)
 
 **When the problem is in the Model.**
 
@@ -69,11 +69,11 @@ Eval fails
     │       NO → Harness problem → HDD
     │
     └── Is the Model receiving everything correctly but still failing?
-            YES → Model problem → LDD
+            YES → Model problem → LLMDD
                   (only after HDD has been exhausted)
 ```
 
-**HDD is the default.** Most agent failures are Harness failures. Go to LDD only after HDD has been fully explored — because Harness changes are faster, cheaper, and reversible. Fine-tuning is expensive and couples the Model to the current Harness.
+**HDD is the default.** Most agent failures are Harness failures. Go to LLMDD only after HDD has been fully explored — because Harness changes are faster, cheaper, and reversible. Fine-tuning is expensive and couples the Model to the current Harness.
 
 ---
 
@@ -81,7 +81,7 @@ Eval fails
 
 ```
 Observe          Hypothesize       Choose path      Iterate
-(evals, traces)  (HDD or LDD?)     (HDD or LDD)     (small changes)
+(evals, traces)  (HDD or LLMDD?)     (HDD or LLMDD)     (small changes)
       │                │                 │                │
       └────────────────┴─────────────────┴────────────────┘
                                                           │
@@ -92,7 +92,7 @@ Observe          Hypothesize       Choose path      Iterate
 ```
 
 1. **Observe** — run evals, read traces. Identify exactly where the failure occurs.
-2. **Hypothesize** — is this a context problem (HDD) or a reasoning problem (LDD)?
+2. **Hypothesize** — is this a context problem (HDD) or a reasoning problem (LLMDD)?
 3. **Choose path** — commit to one. Do not change Model and Harness simultaneously.
 4. **Iterate** — make small, targeted changes.
 5. **Measure** — re-run evals. Did the score improve?
@@ -102,22 +102,22 @@ Changing Model and Harness at the same time makes it impossible to know which ch
 
 ---
 
-## How HDD and LDD fit into ADD
+## How HDD and LLMDD fit into ADD
 
 ```
 ADD
 ├── Agent = Model + Harness          ← the fundamental unit
 ├── Harness-Driven Design (HDD)      ← when the problem is in the Harness
-└── LLM-Driven Design (LDD)          ← when the problem is in the Model
+└── LLM-Driven Design (LLMDD)          ← when the problem is in the Model
 ```
 
-ADD defines the architecture. HDD and LDD define the design strategies for improving it. Every agent improvement is one or the other — never both at once.
+ADD defines the architecture. HDD and LLMDD define the design strategies for improving it. Every agent improvement is one or the other — never both at once.
 
 ---
 
 ## At a glance
 
-| | HDD | LDD |
+| | HDD | LLMDD |
 |---|---|---|
 | **Problem is in** | Harness | Model |
 | **What you change** | Prompts, tools, routing, memory, context | Model version, fine-tuning |
@@ -130,7 +130,7 @@ ADD defines the architecture. HDD and LDD define the design strategies for impro
 
 ## Worked example: Credit Card Fraud Agent
 
-A Fraud Agent evaluates transactions and decides whether to block a card. The team runs evals and scores are low. Here is how they apply the HDD → LDD cycle.
+A Fraud Agent evaluates transactions and decides whether to block a card. The team runs evals and scores are low. Here is how they apply the HDD → LLMDD cycle.
 
 ---
 
@@ -207,13 +207,13 @@ Approve otherwise. Output your reasoning before the decision."""
 
 ---
 
-### Round 3 — LDD
+### Round 3 — LLMDD
 
 **Observe:** The remaining 9% failures are structurally different. The Model receives correct, complete context — all tools called, all data present in the trace — but its reasoning is inconsistent. For the same transaction profile, it sometimes outputs APPROVE and sometimes BLOCK. The inconsistency is not in the data; it is in the Model's judgment.
 
 **Hypothesize:** This is a Model problem. The Harness is providing everything correctly. The base model lacks reliable calibration for fraud decision-making under ambiguity.
 
-**LDD change:**
+**LLMDD change:**
 
 1. Export 300 traces where the correct decision is known (from human review).
 2. Filter to the ambiguous cases — the ones the Model gets inconsistently.
@@ -240,19 +240,19 @@ Start:  61% accuracy
   ├── HDD Round 2: add travel history to cardholder profile tool
   │     → 91% (+7pp) — still a Harness gap
   │
-  └── LDD: fine-tune on 300 labeled ambiguous traces (Harness unchanged)
+  └── LLMDD: fine-tune on 300 labeled ambiguous traces (Harness unchanged)
         → 97% (+6pp) — Model calibration was the remaining problem
 ```
 
-HDD solved 30 percentage points. LDD solved the last 6 — but only after HDD had nothing left to give.
+HDD solved 30 percentage points. LLMDD solved the last 6 — but only after HDD had nothing left to give.
 
 ---
 
 ### Key lessons from this example
 
-- **Never go to LDD first.** The team could have fine-tuned immediately after 61% accuracy. They would have trained a model on incomplete context, embedded a brittle 61%-accuracy Harness into the weights, and created a fine-tuned model that is now hard to improve without retraining.
+- **Never go to LLMDD first.** The team could have fine-tuned immediately after 61% accuracy. They would have trained a model on incomplete context, embedded a brittle 61%-accuracy Harness into the weights, and created a fine-tuned model that is now hard to improve without retraining.
 - **Traces are the diagnostic tool.** Every HDD hypothesis came from reading what the Model actually received, not guessing what it might be missing.
-- **LDD is scoped to the failure mode.** The fine-tuning dataset was 300 ambiguous traces — not all traces. LDD precision matters as much as HDD precision.
+- **LLMDD is scoped to the failure mode.** The fine-tuning dataset was 300 ambiguous traces — not all traces. LLMDD precision matters as much as HDD precision.
 - **Change one thing at a time.** Each round changed either the Harness or the Model — never both. This made it possible to attribute each accuracy gain.
 
 ---

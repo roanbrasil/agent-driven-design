@@ -138,12 +138,12 @@ Anti-pattern. A single agent with an unbounded context, a large mixed tool surfa
 
 A design strategy where improvements to an agent are made by changing the Harness — prompts, tools, context construction, routing, memory — while keeping the Model constant. HDD is the default approach: most agent failures are Harness failures, and Harness changes are faster, cheaper, and more reversible than Model changes.
 
-*See: [HDD vs LDD](guides/hdd-vs-ldd.md)*
+*See: [HDD vs LLMDD](guides/hdd-vs-ldd.md)*
 
 ---
 
-## LLM-Driven Design (LDD)
+## LLM-Driven Design (LLMDD)
 
-A design strategy where improvements to an agent are made by changing the Model — selecting a better base model or fine-tuning — while keeping the Harness constant. LDD is applied only after HDD has been exhausted and evals confirm the failure is in the Model's reasoning, not in the context it receives.
+A design strategy where improvements to an agent are made by changing the Model — selecting a better base model or fine-tuning — while keeping the Harness constant. LLMDD is applied only after HDD has been exhausted and evals confirm the failure is in the Model's reasoning, not in the context it receives.
 
-*See: [HDD vs LDD](guides/hdd-vs-ldd.md)*
+*See: [HDD vs LLMDD](guides/hdd-vs-ldd.md)*

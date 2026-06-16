@@ -58,7 +58,7 @@ A map of how all ADD concepts and patterns relate to each other.
 → See [Fine-tuning](../production/fine-tuning/README.md) — only after ruling out Harness fixes
 
 ### If you're asking "is this a Harness problem or a Model problem?"
-→ See [HDD vs LDD](./hdd-vs-ldd.md) — the two design strategies in ADD
+→ See [HDD vs LLMDD](./hdd-vs-ldd.md) — the two design strategies in ADD
 
 ## The development loop
 
