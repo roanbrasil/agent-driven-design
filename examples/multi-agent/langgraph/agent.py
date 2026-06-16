@@ -27,6 +27,7 @@ Run:
 
 import json
 import os
+import re
 from typing import Annotated, Literal, TypedDict
 from dotenv import load_dotenv
 
@@ -120,7 +121,6 @@ def orchestrator_node(state: OrchestratorState) -> OrchestratorState:
 
     raw = response.content.strip()
     # Harness parses structured output
-    import re
     raw = re.sub(r"```json\n?", "", raw).replace("```", "").strip()
     decision = json.loads(raw)
 
@@ -140,10 +140,9 @@ def make_worker_node(worker_name: str):
     def worker_node(state: OrchestratorState) -> OrchestratorState:
         # Get the orchestrator's instruction for this worker
         last_orchestrator_msg = state["messages"][-1]
-        import re, json as _json
         raw = last_orchestrator_msg.content.strip()
         raw = re.sub(r"```json\n?", "", raw).replace("```", "").strip()
-        instruction = _json.loads(raw).get("instruction", state["task"])
+        instruction = json.loads(raw).get("instruction", state["task"])
 
         response = worker_llm.invoke([
             SystemMessage(content=config["system"]),
